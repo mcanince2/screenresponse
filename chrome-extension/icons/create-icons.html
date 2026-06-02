@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Icon Generator</title>
+</head>
+<body>
+  <p>Save these canvases as PNGs:</p>
+  <canvas id="icon16" width="16" height="16"></canvas>
+  <canvas id="icon48" width="48" height="48"></canvas>
+  <canvas id="icon128" width="128" height="128"></canvas>
+  
+  <script>
+    function drawIcon(ctx, size) {
+      const center = size / 2;
+      const radius = size * 0.4;
+      
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4285f4');
+      gradient.addColorStop(1, '#7c4dff');
+      
+      // Circle
+      ctx.beginPath();
+      ctx.arc(center, center, radius, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Checkmark
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = size * 0.08;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(center - radius * 0.35, center);
+      ctx.lineTo(center - radius * 0.05, center + radius * 0.3);
+      ctx.lineTo(center + radius * 0.4, center - radius * 0.25);
+      ctx.stroke();
+    }
+    
+    [16, 48, 128].forEach(size => {
+      const canvas = document.getElementById('icon' + size);
+      const ctx = canvas.getContext('2d');
+      drawIcon(ctx, size);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+  <title>ScreenResponse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="widget-container">
+    <!-- Drag Handle -->
+    <div class="drag-handle">
+      <div class="drag-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- Header -->
+    <header class="widget-header">
+      <div class="header-left">
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="videoBtn" title="Video Generation">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="shortcutsBtn" title="Shortcuts">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <line x1="6" y1="8" x2="6.01" y2="8"/>
+            <line x1="10" y1="8" x2="10.01" y2="8"/>
+            <line x1="14" y1="8" x2="14.01" y2="8"/>
+            <line x1="18" y1="8" x2="18.01" y2="8"/>
+            <line x1="6" y1="12" x2="6.01" y2="12"/>
+            <line x1="18" y1="12" x2="18.01" y2="12"/>
+            <line x1="8" y1="16" x2="16" y2="16"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="historyBtn" title="History">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="clipboardBtn" title="Clipboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <rect x="8" y="2" width="8" height="4" rx="1"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" title="Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="closeBtn" title="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="widget-content">
+
+      <!-- Welcome State -->
+      <div class="state welcome-state" id="welcomeState">
+        <div class="state-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h2>ScreenResponse</h2>
+        <p class="subtitle">Capture. Detect. Respond.</p>
+
+        <div class="welcome-actions">
+          <button class="btn btn-primary" id="captureBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Full Screen
+          </button>
+          <button class="btn btn-secondary" id="captureAreaBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L2 2 2 6"/>
+              <path d="M18 2L22 2 22 6"/>
+              <path d="M6 22L2 22 2 18"/>
+              <path d="M18 22L22 22 22 18"/>
+            </svg>
+            Select Area
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="state loading-state hidden" id="loadingState">
+        <div class="spinner"></div>
+        <p id="loadingText">Processing...</p>
+      </div>
+
+      <!-- Input State -->
+      <div class="state input-state hidden" id="inputState">
+        <div class="detected-info">
+          <span class="badge" id="messageType">Email</span>
+          <span class="badge" id="messageTone">Professional</span>
+          <span class="badge" id="messageLanguage">EN</span>
+        </div>
+        <div class="input-preview">
+          <label>DETECTED MESSAGE</label>
+          <div class="preview-text resizable" id="detectedText"></div>
+          <div class="resize-handle" id="previewResizeHandle">
+            <svg width="16" height="6" viewBox="0 0 16 6" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="4" y1="1" x2="12" y2="1"/><line x1="4" y1="4" x2="12" y2="4"/>
+            </svg>
+          </div>
+        </div>
+        <div class="response-type-section">
+          <label>RESPONSE TYPE</label>
+          <div class="response-types">
+            <button class="type-chip active" data-type="auto">Auto</button>
+            <button class="type-chip" data-type="accept">Accept</button>
+            <button class="type-chip" data-type="decline">Decline</button>
+            <button class="type-chip" data-type="question">Ask</button>
+            <button class="type-chip" data-type="thankYou">Thanks</button>
+            <button class="type-chip" data-type="acknowledge">Ack</button>
+          </div>
+        </div>
+        <div class="instruction-section">
+          <label>INSTRUCTIONS <span class="optional-tag">optional</span></label>
+          <textarea class="instruction-input" id="instructionInput" placeholder="e.g. kibarca reddet, toplantı için alternatif tarih öner..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-full" id="generateBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          Generate
+        </button>
+      </div>
+
+      <!-- Response State -->
+      <div class="state response-state hidden" id="responseState">
+        <div class="response-header">
+          <span>RESPONSE</span>
+          <div class="response-header-actions">
+            <button class="icon-btn small" id="copyIconBtn" title="Copy (&#8984;&#8679;C)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="1"/>
+                <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1"/>
+              </svg>
+            </button>
+            <button class="icon-btn small" id="regenerateBtn" title="Regenerate">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <textarea class="response-text" id="responseText" placeholder="..."></textarea>
+        <div class="quick-actions">
+          <button class="action-chip" data-action="shorter">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Shorter
+          </button>
+          <button class="action-chip" data-action="longer">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Longer
+          </button>
+          <button class="action-chip" data-action="formal">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>
+            Formal
+          </button>
+          <button class="action-chip" data-action="casual">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+            Casual
+          </button>
+          <button class="action-chip" data-action="friendly">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Friendly
+          </button>
+          <button class="action-chip" data-action="assertive">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Assertive
+          </button>
+          <button class="action-chip" data-action="polite">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Polite
+          </button>
+          <button class="action-chip" data-action="simplify">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Simplify
+          </button>
+        </div>
+        <div class="command-input">
+          <input type="text" id="commandInput" placeholder="Custom instruction...">
+          <button class="btn btn-small" id="applyCommandBtn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <button class="btn btn-primary btn-full" id="copyBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copy
+        </button>
+      </div>
+
+      <!-- Shortcuts State -->
+      <div class="state shortcuts-state hidden" id="shortcutsState">
+        <div class="panel-header">
+          <h3>Keyboard Shortcuts</h3>
+          <button class="icon-btn small" id="shortcutsBackBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="shortcuts-list">
+          <div class="shortcut-row">
+            <span class="shortcut-label">Full screen capture</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>R</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Area select capture</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>A</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Paste clipboard text</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>V</kbd> / <kbd>&#8984;</kbd><kbd>&#8997;</kbd><kbd>V</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Quick generate</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>G</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Show / hide widget</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>S</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Copy last response</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>P</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Copy current response</span>
+            <div class="shortcut-keys"><kbd>&#8984;</kbd><kbd>&#8679;</kbd><kbd>C</kbd> / <kbd>&#8984;</kbd><kbd>&#8997;</kbd><kbd>C</kbd></div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-label">Close widget</span>
+            <div class="shortcut-keys"><kbd>Esc</kbd></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History State -->
+      <div class="state history-state hidden" id="historyState">
+        <div class="panel-header">
+          <h3>History</h3>
+          <button class="icon-btn small" id="historyBackBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="history-list" id="historyList">
+          <p class="empty-state-text">No responses yet</p>
+        </div>
+      </div>
+
+      <!-- Clipboard State -->
+      <div class="state clipboard-state hidden" id="clipboardState">
+        <div class="panel-header">
+          <h3>Clipboard</h3>
+          <button class="icon-btn small" id="clipboardBackBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="clipboard-list" id="clipboardList">
+          <p class="empty-state-text">No clipboard items yet</p>
+        </div>
+      </div>
+
+      <!-- Settings State -->
+      <div class="state settings-state hidden" id="settingsState">
+        <div class="panel-header">
+          <h3>Settings</h3>
+          <button class="icon-btn small" id="cancelSettingsBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="settings-form">
+          <div class="form-group">
+            <label for="apiKeyInput">API KEY</label>
+            <input type="password" id="apiKeyInput" placeholder="Built-in key active">
+            <small>Leave empty to use built-in key</small>
+          </div>
+          <div class="form-group">
+            <label for="modelSelect">MODEL</label>
+            <select id="modelSelect">
+              <option value="gpt-4">GPT-4</option>
+              <option value="gpt-4-turbo">GPT-4 Turbo</option>
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gpt-4o-mini">GPT-4o Mini</option>
+              <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="themeSelect">THEME</label>
+            <select id="themeSelect">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="languageSelect">RESPONSE LANGUAGE</label>
+            <select id="languageSelect">
+              <option value="auto">Auto-detect</option>
+              <option value="en">English</option>
+              <option value="tr">Turkish</option>
+              <option value="es">Spanish</option>
+              <option value="de">German</option>
+              <option value="fr">French</option>
+              <option value="ar">Arabic</option>
+              <option value="zh">Chinese</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="ru">Russian</option>
+              <option value="pt">Portuguese</option>
+              <option value="it">Italian</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="toggle-label">
+              <input type="checkbox" id="autoClipboardToggle">
+              <span>Auto-detect clipboard</span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button class="btn btn-primary" id="saveSettingsBtn">Save</button>
+        </div>
+      </div>
+
+      <!-- Video Generation State -->
+      <div class="state video-state hidden" id="videoState">
+        <div class="panel-header">
+          <h3>Video Generation</h3>
+          <button class="icon-btn small" id="videoBackBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="video-status" id="videoStatus">
+          <span class="status-dot offline" id="statusDot"></span>
+          <span id="statusText">Checking GPU...</span>
+        </div>
+
+        <div class="form-group">
+          <label>PROMPT</label>
+          <textarea class="video-prompt" id="videoPrompt" placeholder="Describe the video you want to generate...&#10;e.g. A cinematic shot of a golden retriever running through a field of sunflowers at sunset"></textarea>
+        </div>
+
+        <div class="video-params">
+          <div class="param-group">
+            <label>RESOLUTION</label>
+            <select id="videoResolution">
+              <option value="512x768">512x768</option>
+              <option value="768x512">768x512 (Landscape)</option>
+              <option value="512x512">512x512 (Square)</option>
+              <option value="768x1024">768x1024 (Portrait HD)</option>
+              <option value="1024x768">1024x768 (Landscape HD)</option>
+            </select>
+          </div>
+          <div class="param-group">
+            <label>FRAMES</label>
+            <select id="videoFrames">
+              <option value="49">49 (~2s)</option>
+              <option value="97" selected>97 (~4s)</option>
+              <option value="121">121 (~5s)</option>
+            </select>
+          </div>
+          <div class="param-group">
+            <label>SEED</label>
+            <input type="number" id="videoSeed" value="42" min="0" max="999999">
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="generateVideoBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Generate Video
+        </button>
+
+        <!-- Video Loading -->
+        <div class="video-loading hidden" id="videoLoading">
+          <div class="spinner"></div>
+          <p id="videoLoadingText">Generating video...</p>
+          <p class="video-loading-sub">This may take 2-5 minutes</p>
+        </div>
+
+        <!-- Video Result -->
+        <div class="video-result hidden" id="videoResult">
+          <video id="videoPlayer" controls autoplay loop>
+            <source id="videoSource" type="video/mp4">
+          </video>
+          <div class="video-actions">
+            <button class="btn btn-secondary" id="saveVideoBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Save
+            </button>
+            <button class="btn btn-primary" id="newVideoBtn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              New
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div class="state error-state hidden" id="errorState">
+        <div class="state-icon error">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <p id="errorText">An error occurred</p>
+        <button class="btn btn-secondary" id="retryBtn">Retry</button>
+      </div>
+
+    </main>
+
+    <footer class="widget-footer">
+      <span class="shortcut-hint">&#8984;&#8679;R Full &bull; &#8984;&#8679;A Area &bull; &#8984;&#8679;G Quick &bull; Esc Close</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

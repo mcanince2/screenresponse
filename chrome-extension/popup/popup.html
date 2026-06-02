@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScreenResponse</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1>ScreenResponse</h1>
+    </header>
+
+    <main class="popup-content">
+      <!-- Quick Actions -->
+      <section class="quick-section">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+          <button class="action-btn" id="generateFromSelection">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 9h6M9 13h6M9 17h4"/>
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+            </svg>
+            <span>Use Selection</span>
+          </button>
+          <button class="action-btn" id="openWidget">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18"/>
+            </svg>
+            <span>Open Widget</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="settings-section">
+        <h3>Settings</h3>
+        <div class="form-group">
+          <label for="apiKey">OpenAI API Key</label>
+          <div class="input-row">
+            <input type="password" id="apiKey" placeholder="sk-...">
+            <button class="toggle-btn" id="toggleApiKey" title="Show/Hide">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="language">Response Language</label>
+          <select id="language">
+            <option value="auto">Auto-detect</option>
+            <option value="en">English</option>
+            <option value="tr">Türkçe</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+          </select>
+        </div>
+        <button class="save-btn" id="saveSettings">Save Settings</button>
+      </section>
+
+      <!-- Shortcuts -->
+      <section class="shortcuts-section">
+        <h3>Keyboard Shortcuts</h3>
+        <div class="shortcut-list">
+          <div class="shortcut-item">
+            <kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>
+            <span>Generate Response</span>
+          </div>
+          <div class="shortcut-item">
+            <kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>
+            <span>Open Popup</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="popup-footer">
+      <span>v1.0.0</span>
+      <span class="status" id="status">Ready</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

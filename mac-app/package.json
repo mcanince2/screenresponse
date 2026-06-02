@@ -1,0 +1,58 @@
+{
+  "name": "screenresponse",
+  "version": "1.0.0",
+  "description": "AI-powered automatic response generator for messages",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "pack": "electron-builder --dir"
+  },
+  "author": "ScreenResponse",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "tesseract.js": "^5.0.4",
+    "node-fetch": "^2.7.0",
+    "electron-store": "^8.1.0",
+    "screenshot-desktop": "^1.15.0"
+  },
+  "build": {
+    "appId": "com.screenresponse.app",
+    "productName": "ScreenResponse",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64"]
+        }
+      ],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "entitlements": null,
+      "entitlementsInherit": null,
+      "identity": null
+    },
+    "dmg": {
+      "title": "ScreenResponse",
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!assets/icon.iconset",
+      "!assets/icon.svg"
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+<!--
+  ScreenResponse Floating Widget Template
+  This HTML is injected by content.js into web pages
+-->
+<div id="screenresponse-widget">
+  <div class="sr-widget-container">
+    <div class="sr-drag-handle">
+      <div class="sr-drag-dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="sr-header">
+      <div class="sr-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="sr-title">ScreenResponse</span>
+      <div class="sr-actions">
+        <button class="sr-icon-btn" id="sr-minimize-btn" title="Minimize">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+        <button class="sr-icon-btn" id="sr-close-btn" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="sr-content">
+      <!-- Welcome State -->
+      <div class="sr-state sr-welcome-state" id="sr-welcome-state">
+        <p>Select text on the page and click the button below</p>
+        <p><kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></p>
+        <button class="sr-btn sr-btn-primary" id="sr-use-selection-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 9h6M9 13h6M9 17h4"/>
+          </svg>
+          Use Selection
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div class="sr-state sr-loading-state sr-hidden" id="sr-loading-state">
+        <div class="sr-spinner"></div>
+        <p id="sr-loading-text">Processing...</p>
+      </div>
+
+      <!-- Input State -->
+      <div class="sr-state sr-input-state sr-hidden" id="sr-input-state">
+        <div class="sr-badges">
+          <span class="sr-badge" id="sr-msg-type">Message</span>
+          <span class="sr-badge" id="sr-msg-tone">Professional</span>
+        </div>
+        <div class="sr-preview" id="sr-preview-text"></div>
+        <button class="sr-btn sr-btn-primary sr-btn-full" id="sr-generate-btn">
+          Generate Response
+        </button>
+      </div>
+
+      <!-- Response State -->
+      <div class="sr-state sr-response-state sr-hidden" id="sr-response-state">
+        <textarea class="sr-response-text" id="sr-response-text" placeholder="Response..."></textarea>
+        <div class="sr-quick-actions">
+          <button class="sr-chip" data-action="shorter">📝 Shorter</button>
+          <button class="sr-chip" data-action="formal">👔 Formal</button>
+          <button class="sr-chip" data-action="casual">😊 Casual</button>
+        </div>
+        <div class="sr-command-row">
+          <input type="text" class="sr-command-input" id="sr-command-input" placeholder="Custom instruction...">
+          <button class="sr-btn sr-btn-small" id="sr-apply-cmd-btn">Apply</button>
+        </div>
+        <div class="sr-button-row">
+          <button class="sr-btn sr-btn-secondary" id="sr-insert-btn">Insert</button>
+          <button class="sr-btn sr-btn-success" id="sr-copy-btn">Copy</button>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div class="sr-state sr-error-state sr-hidden" id="sr-error-state">
+        <p id="sr-error-text">An error occurred</p>
+        <button class="sr-btn sr-btn-secondary" id="sr-retry-btn">Try Again</button>
+      </div>
+    </div>
+  </div>
+</div>

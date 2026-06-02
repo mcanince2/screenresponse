@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" rx="220" fill="#0a0a0a"/>
+  <!-- Monitor frame -->
+  <rect x="200" y="180" width="624" height="440" rx="24" fill="none" stroke="#ffffff" stroke-width="32"/>
+  <!-- Screen content lines -->
+  <rect x="280" y="280" width="320" height="16" rx="8" fill="#ffffff" opacity="0.4"/>
+  <rect x="280" y="330" width="240" height="16" rx="8" fill="#ffffff" opacity="0.3"/>
+  <rect x="280" y="380" width="280" height="16" rx="8" fill="#ffffff" opacity="0.2"/>
+  <!-- Monitor stand -->
+  <rect x="440" y="620" width="144" height="24" rx="4" fill="#ffffff"/>
+  <rect x="400" y="644" width="224" height="20" rx="4" fill="#ffffff"/>
+  <!-- Chat bubble -->
+  <rect x="520" y="460" width="280" height="180" rx="20" fill="#ffffff"/>
+  <polygon points="560,640 580,640 540,700" fill="#ffffff"/>
+  <!-- Chat lines -->
+  <rect x="556" y="500" width="200" height="12" rx="6" fill="#0a0a0a"/>
+  <rect x="556" y="530" width="150" height="12" rx="6" fill="#0a0a0a"/>
+  <rect x="556" y="560" width="180" height="12" rx="6" fill="#0a0a0a"/>
+  <rect x="556" y="590" width="120" height="12" rx="6" fill="#0a0a0a"/>
+</svg>

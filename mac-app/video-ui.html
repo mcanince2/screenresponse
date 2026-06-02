@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTX-2.3 Video Generator</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container {
+    width: 100%;
+    max-width: 680px;
+    padding: 24px;
+  }
+  h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; color: #fff; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 24px; }
+  .status { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 13px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .status-dot.online { background: #22c55e; }
+  .status-dot.offline { background: #ef4444; }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+
+  textarea {
+    width: 100%; height: 100px; background: #141414; border: 1px solid #2a2a2a;
+    border-radius: 10px; color: #fff; padding: 14px; font-size: 15px;
+    resize: vertical; outline: none; font-family: inherit; transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: #444; }
+  textarea::placeholder { color: #444; }
+
+  .section-title {
+    font-size: 11px; color: #555; text-transform: uppercase;
+    letter-spacing: 0.5px; margin: 16px 0 8px;
+  }
+
+  .params {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px; margin: 14px 0;
+  }
+  .param label {
+    display: block; font-size: 11px; color: #666;
+    margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .param select, .param input {
+    width: 100%; background: #141414; border: 1px solid #2a2a2a;
+    border-radius: 8px; color: #fff; padding: 8px 10px; font-size: 13px; outline: none;
+  }
+
+  .aspect-ratios {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+  }
+  .ar-btn {
+    padding: 6px 12px; background: #141414; border: 1px solid #2a2a2a;
+    border-radius: 6px; color: #888; font-size: 12px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ar-btn:hover { border-color: #444; color: #ccc; }
+  .ar-btn.active { border-color: #fff; color: #fff; background: #1a1a1a; }
+
+  .image-inputs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
+  }
+  .image-box {
+    background: #141414; border: 1px dashed #2a2a2a; border-radius: 10px;
+    padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.2s;
+    position: relative; min-height: 110px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .image-box:hover { border-color: #444; }
+  .image-box.has-image { border-style: solid; border-color: #333; padding: 4px; }
+  .image-box img { max-width: 100%; max-height: 90px; border-radius: 6px; object-fit: cover; }
+  .image-box .label { font-size: 12px; color: #555; margin-top: 6px; }
+  .image-box .icon { font-size: 24px; color: #333; margin-bottom: 4px; }
+  .image-box .remove-btn {
+    position: absolute; top: 6px; right: 6px; background: #333; border: none;
+    color: #aaa; width: 20px; height: 20px; border-radius: 50%; font-size: 12px;
+    cursor: pointer; display: none; align-items: center; justify-content: center;
+  }
+  .image-box.has-image .remove-btn { display: flex; }
+
+  .options-row {
+    display: flex; gap: 16px; margin-bottom: 14px; align-items: center; flex-wrap: wrap;
+  }
+  .checkbox-label {
+    display: flex; align-items: center; gap: 6px; font-size: 13px; color: #999; cursor: pointer;
+  }
+  .checkbox-label input[type="checkbox"] { accent-color: #fff; }
+
+  .info-badge {
+    display: inline-block; padding: 3px 8px; background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-radius: 4px; font-size: 11px; color: #666;
+  }
+
+  .btn {
+    width: 100%; padding: 14px; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 6px;
+  }
+  .btn-generate { background: #fff; color: #000; }
+  .btn-generate:hover { background: #ddd; }
+  .btn-generate:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+  .progress { display: none; text-align: center; padding: 40px 0; }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid #222; border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .progress-text { font-size: 13px; color: #888; }
+
+  .result { display: none; margin-top: 20px; }
+  video { width: 100%; border-radius: 10px; background: #000; }
+  .result-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .result-info { font-size: 11px; color: #555; margin-top: 8px; text-align: center; }
+  .btn-secondary {
+    flex: 1; padding: 10px; background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-radius: 8px; color: #fff; font-size: 13px; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: #252525; }
+
+  .error {
+    display: none; background: #1c0a0a; border: 1px solid #3a1515;
+    border-radius: 10px; padding: 14px; margin-top: 14px; font-size: 13px; color: #ef4444;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>LTX-2.3 Video</h1>
+  <p class="subtitle">Text-to-Video · LTX-2.3 Dev · RTX PRO 6000 Blackwell · 2x Spatial Upscale</p>
+
+  <div class="status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Checking...</span>
+  </div>
+
+  <textarea id="prompt" placeholder="Describe the video you want to generate...">A cat walking on a sunny street</textarea>
+
+  <div class="section-title">Aspect Ratio</div>
+  <div class="aspect-ratios" id="aspectRatios">
+    <button class="ar-btn" data-res="768x1024" onclick="selectAR(this)">3:4 Portrait</button>
+    <button class="ar-btn active" data-res="1024x768" onclick="selectAR(this)">4:3 Landscape</button>
+    <button class="ar-btn" data-res="768x1280" onclick="selectAR(this)">9:16 Vertical</button>
+    <button class="ar-btn" data-res="1280x768" onclick="selectAR(this)">16:9 Wide</button>
+    <button class="ar-btn" data-res="768x768" onclick="selectAR(this)">1:1 Square</button>
+    <button class="ar-btn" data-res="512x1024" onclick="selectAR(this)">1:2 Tall</button>
+    <button class="ar-btn" data-res="1024x512" onclick="selectAR(this)">2:1 Ultra Wide</button>
+    <button class="ar-btn" data-res="576x1024" onclick="selectAR(this)">9:16 Story</button>
+    <button class="ar-btn" data-res="1024x576" onclick="selectAR(this)">16:9 Cinema</button>
+  </div>
+  <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+    <span class="info-badge" id="resInfo">Output: 1024x768 (upscaled from 512x384)</span>
+  </div>
+
+  <div class="params">
+    <div class="param">
+      <label>Frames</label>
+      <select id="frames">
+        <option value="33">33 (~1s)</option>
+        <option value="65" selected>65 (~2.5s)</option>
+        <option value="97">97 (~4s)</option>
+        <option value="129">129 (~5s)</option>
+        <option value="161">161 (~6s)</option>
+      </select>
+    </div>
+    <div class="param">
+      <label>Seed</label>
+      <input type="number" id="seed" value="42">
+    </div>
+    <div class="param">
+      <label>&nbsp;</label>
+      <button class="btn-secondary" onclick="document.getElementById('seed').value = Math.floor(Math.random()*999999)">Random</button>
+    </div>
+    <div class="param">
+      <label>Pipeline</label>
+      <select id="pipeline">
+        <option value="normal" selected>Standard</option>
+        <option value="hq">HQ (slower)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section-title">Image Conditioning (optional)</div>
+  <div class="image-inputs">
+    <div class="image-box" id="firstFrameBox" onclick="document.getElementById('firstFrameInput').click()">
+      <div class="icon" id="firstFrameIcon">+</div>
+      <div class="label">First Frame</div>
+      <img id="firstFramePreview" style="display:none">
+      <button class="remove-btn" onclick="event.stopPropagation(); removeImage('first')">&times;</button>
+      <input type="file" id="firstFrameInput" accept="image/*" style="display:none" onchange="handleImage(this, 'first')">
+    </div>
+    <div class="image-box" id="lastFrameBox" onclick="document.getElementById('lastFrameInput').click()">
+      <div class="icon" id="lastFrameIcon">+</div>
+      <div class="label">Last Frame</div>
+      <img id="lastFramePreview" style="display:none">
+      <button class="remove-btn" onclick="event.stopPropagation(); removeImage('last')">&times;</button>
+      <input type="file" id="lastFrameInput" accept="image/*" style="display:none" onchange="handleImage(this, 'last')">
+    </div>
+  </div>
+
+  <div class="options-row">
+    <label class="checkbox-label">
+      <input type="checkbox" id="enhancePrompt">
+      Enhance prompt (AI rewrite)
+    </label>
+  </div>
+
+  <button class="btn btn-generate" id="generateBtn" onclick="generate()">Generate Video</button>
+
+  <div class="progress" id="progress">
+    <div class="spinner"></div>
+    <div class="progress-text" id="progressText">Generating video...</div>
+  </div>
+
+  <div class="error" id="error"></div>
+
+  <div class="result" id="result">
+    <video id="videoPlayer" controls autoplay loop></video>
+    <div class="result-info" id="resultInfo"></div>
+    <div class="result-actions">
+      <button class="btn-secondary" onclick="downloadVideo()">Download MP4</button>
+      <button class="btn-secondary" onclick="resetUI()">New Video</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://p6d73t3c95gihl-8000.proxy.runpod.net';
+let currentVideoB64 = null;
+let firstFrameB64 = null;
+let lastFrameB64 = null;
+let selectedRes = '1024x768';
+
+function selectAR(btn) {
+  document.querySelectorAll('.ar-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedRes = btn.dataset.res;
+  updateResInfo();
+}
+
+function updateResInfo() {
+  const [w, h] = selectedRes.split('x').map(Number);
+  document.getElementById('resInfo').textContent =
+    `Output: ${w}x${h} (upscaled from ${w/2}x${h/2})`;
+}
+
+function handleImage(input, which) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const b64 = e.target.result.split(',')[1];
+    const box = document.getElementById(which + 'FrameBox');
+    const preview = document.getElementById(which + 'FramePreview');
+    const icon = document.getElementById(which + 'FrameIcon');
+    const label = box.querySelector('.label');
+    if (which === 'first') firstFrameB64 = b64; else lastFrameB64 = b64;
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    icon.style.display = 'none';
+    label.textContent = file.name.substring(0, 20);
+    box.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImage(which) {
+  const box = document.getElementById(which + 'FrameBox');
+  const preview = document.getElementById(which + 'FramePreview');
+  const icon = document.getElementById(which + 'FrameIcon');
+  const label = box.querySelector('.label');
+  const input = document.getElementById(which + 'FrameInput');
+  if (which === 'first') firstFrameB64 = null; else lastFrameB64 = null;
+  preview.style.display = 'none'; preview.src = '';
+  icon.style.display = 'block';
+  label.textContent = which === 'first' ? 'First Frame' : 'Last Frame';
+  box.classList.remove('has-image'); input.value = '';
+}
+
+async function checkHealth() {
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  try {
+    const r = await fetch(API + '/health');
+    const d = await r.json();
+    if (d.status === 'ok') {
+      dot.className = 'status-dot online';
+      text.textContent = d.model + ' · ' + d.gpu;
+      document.getElementById('generateBtn').disabled = false;
+    } else {
+      dot.className = 'status-dot offline';
+      text.textContent = 'Server error';
+    }
+  } catch(e) {
+    dot.className = 'status-dot offline';
+    text.textContent = 'Offline — pod not running';
+    document.getElementById('generateBtn').disabled = true;
+  }
+}
+
+async function generate() {
+  const prompt = document.getElementById('prompt').value.trim();
+  if (!prompt) return;
+
+  const [w, h] = selectedRes.split('x').map(Number);
+  const numFrames = parseInt(document.getElementById('frames').value);
+  const seed = parseInt(document.getElementById('seed').value) || 42;
+  const enhancePrompt = document.getElementById('enhancePrompt').checked;
+  const pipeline = document.getElementById('pipeline').value;
+
+  const images = [];
+  if (firstFrameB64) images.push({ image_base64: firstFrameB64, frame_index: 0, strength: 0.8 });
+  if (lastFrameB64) images.push({ image_base64: lastFrameB64, frame_index: numFrames - 1, strength: 0.8 });
+
+  document.getElementById('generateBtn').disabled = true;
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('error').style.display = 'none';
+
+  const start = Date.now();
+  const timer = setInterval(() => {
+    const sec = Math.floor((Date.now() - start) / 1000);
+    document.getElementById('progressText').textContent = `Generating video... ${sec}s`;
+  }, 1000);
+
+  const body = {
+    prompt, height: h, width: w, num_frames: numFrames, seed,
+    enhance_prompt: enhancePrompt, pipeline
+  };
+  if (images.length > 0) body.images = images;
+
+  try {
+    const r = await fetch(API + '/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    clearInterval(timer);
+    const elapsed = Math.floor((Date.now() - start) / 1000);
+
+    const d = await r.json();
+    if (d.status === 'success' && d.video_base64) {
+      currentVideoB64 = d.video_base64;
+      const blob = b64toBlob(d.video_base64, 'video/mp4');
+      document.getElementById('videoPlayer').src = URL.createObjectURL(blob);
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('progress').style.display = 'none';
+      const sizeKB = Math.round(atob(d.video_base64).length / 1024);
+      document.getElementById('resultInfo').textContent =
+        `${w}x${h} · ${numFrames} frames · ${sizeKB} KB · ${elapsed}s · seed ${seed}`;
+    } else {
+      showError(d.error || 'Unknown error');
+    }
+  } catch(e) {
+    clearInterval(timer);
+    showError(e.message);
+  }
+  document.getElementById('generateBtn').disabled = false;
+}
+
+function showError(msg) {
+  document.getElementById('progress').style.display = 'none';
+  document.getElementById('error').style.display = 'block';
+  document.getElementById('error').textContent = msg;
+}
+
+function resetUI() {
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('error').style.display = 'none';
+  currentVideoB64 = null;
+}
+
+function downloadVideo() {
+  if (!currentVideoB64) return;
+  const blob = b64toBlob(currentVideoB64, 'video/mp4');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ltx-video-' + Date.now() + '.mp4';
+  a.click();
+}
+
+function b64toBlob(b64, type) {
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type });
+}
+
+checkHealth();
+updateResInfo();
+</script>
+</body>
+</html>

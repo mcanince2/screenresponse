@@ -1,0 +1,37 @@
+# Secrets / environment
+.env
+.env.local
+*.env
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Electron build output (also contains previously-baked binaries)
+dist/
+build/
+out/
+*.dmg
+*.zip
+*.asar
+
+# Tesseract language data — downloaded automatically on first OCR run
+*.traineddata
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editors / AI agents
+.DS_Store
+.vscode/
+.claude/
+
+# Logs
+*.log
+
+# Auto-generated project context (reveals local paths)
+CODEBASE.md
