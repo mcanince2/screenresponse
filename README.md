@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/mcanince2/screenresponse/actions/workflows/ci.yml"><img src="https://github.com/mcanince2/screenresponse/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/electron-28-47848f.svg" alt="Electron">
   <img src="https://img.shields.io/badge/chrome-extension-2dd4bf.svg" alt="Chrome Extension">
   <img src="https://img.shields.io/badge/AI-OpenAI%20GPT-34d399.svg" alt="OpenAI">

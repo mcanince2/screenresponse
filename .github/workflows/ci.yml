@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  javascript:
+    name: JS syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Syntax-check all JS (excluding node_modules)
+        run: |
+          find mac-app chrome-extension shared -name "*.js" -not -path "*/node_modules/*" \
+            -print -exec node --check {} \;
+      - name: Validate JSON manifests
+        run: |
+          python3 -c "import json; json.load(open('chrome-extension/manifest.json'))"
+          python3 -c "import json; json.load(open('mac-app/package.json'))"
+
+  python:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Byte-compile Python services
+        run: python -m compileall -q mac-app/services
