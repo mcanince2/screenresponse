@@ -38,6 +38,14 @@
 - Generates a smart reply, then refine it: *Shorter*, *More formal*, *Friendlier*…
 - Multi-language (auto-detect)
 
+## 📸 Screenshot
+
+<p align="center">
+  <img src="assets/screenshots/widget.png" alt="ScreenResponse floating widget" width="380">
+</p>
+
+<p align="center"><i>The floating macOS widget — capture the full screen or a selected area, then let it detect and draft a reply.</i></p>
+
 ## 🔑 API Key — bring your own
 
 ScreenResponse ships **without any embedded API key**. You provide your own OpenAI
